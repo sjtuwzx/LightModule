@@ -52,6 +52,12 @@ public abstract class Module {
         onRefresh();
     }
 
+    /**
+     * 请求刷新module树。若targets为空,则刷新整颗module树;targets中元素若为module且module树中包含该module,
+     * 刷新该module及其父module链;targets中元素若为String,刷新module树中tag为target的module及其父module链。
+     *
+     * @param targets
+     */
     public void requestRefresh(Object... targets) {
         if (mParent != null) {
             mParent.requestRefresh(targets);
