@@ -117,9 +117,7 @@ public class ModuleGroup extends Module implements ModuleParent {
     @Override
     void resume() {
         for (Module child : mChildren) {
-            if (!child.isResumed() && child.getViewIfCreated() != null && child.shouldShowModule()) {
-                child.resume();
-            }
+            child.resume();
         }
         super.resume();
     }
@@ -127,9 +125,7 @@ public class ModuleGroup extends Module implements ModuleParent {
     @Override
     void pause() {
         for (Module child : mChildren) {
-            if (child.isResumed()) {
-                child.pause();
-            }
+            child.pause();
         }
         super.pause();
     }

@@ -92,18 +92,18 @@ public abstract class Module {
 
     }
 
-    protected boolean isResumed() {
-        return mIsResumed;
-    }
-
     void resume() {
-        onResume();
-        mIsResumed = true;
+        if (!mIsResumed && getViewIfCreated() != null && shouldShowModule()) {
+            onResume();
+            mIsResumed = true;
+        }
     }
 
     void pause() {
-        onPause();
-        mIsResumed = false;
+        if (mIsResumed) {
+            onPause();
+            mIsResumed = false;
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
