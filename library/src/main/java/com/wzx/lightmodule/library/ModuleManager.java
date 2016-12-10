@@ -14,12 +14,8 @@ public class ModuleManager extends ModuleGroup {
     }
 
     @Override
-    public void requestRefresh(Module trigger) {
-        if (trigger == null) {
-            refresh();
-        } else {
-            refresh(trigger);
-        }
+    public void requestRefresh(Object... targets) {
+        refresh(targets);
     }
 
     @Override

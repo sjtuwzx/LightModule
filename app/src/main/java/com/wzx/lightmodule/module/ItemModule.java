@@ -26,7 +26,12 @@ public class ItemModule extends Module {
 
     @Override
     public boolean shouldShowModule() {
-        return mIndex % 3 != 0;
+        return mIndex % 5 != 0;
+    }
+
+    @Override
+    protected String getTag() {
+        return "Item" + mIndex;
     }
 
     @Override

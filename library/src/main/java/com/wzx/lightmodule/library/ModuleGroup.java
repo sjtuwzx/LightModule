@@ -63,47 +63,13 @@ public class ModuleGroup extends Module implements ModuleParent {
     }
 
     @Override
-    public void requestRefresh(Module trigger) {
-        if (mParent != null) {
-            mParent.requestRefresh(trigger);
-        }
-    }
-
-    @Override
-    public void refresh() {
+    public void refresh(Object... targets) {
+        boolean isTargetsEmpty = targets == null || targets.length == 0;
         int index = 0;
         for (Module child : mChildren) {
             View childView = child.getViewIfCreated();
-            if (child.shouldShowModule()) {
-                if (childView == null) {
-                    childView = child.getView(mContainer);
-                    if (childView.getParent() == null) {
-                        mContainer.addView(childView, index);
-                    }
-                }
-                childView.setVisibility(View.VISIBLE);
-                child.refresh();
 
-                child.resume();
-            } else if (childView != null){
-                childView.setVisibility(View.GONE);
-                child.pause();
-            }
-            if (childView != null && mContainer.indexOfChild(childView) >= 0) {
-                ++index;
-            }
-        }
-
-        onRefresh();
-    }
-
-    protected void refresh(Module trigger) {
-        int index = 0;
-        for (Module child : mChildren) {
-            View childView = child.getViewIfCreated();
-            boolean containTrigger = child.contain(trigger);
-
-            if (containTrigger) {
+            if (isTargetsEmpty || child.contain(targets)) {
                 if (child.shouldShowModule()) {
                     if (childView == null) {
                         childView = child.getView(mContainer);
@@ -115,7 +81,7 @@ public class ModuleGroup extends Module implements ModuleParent {
 
                     if (child instanceof ModuleGroup) {
                         ModuleGroup childGroup = (ModuleGroup) child;
-                        childGroup.refresh(trigger);
+                        childGroup.refresh(targets);
                     } else {
                         child.refresh();
                     }
@@ -139,9 +105,9 @@ public class ModuleGroup extends Module implements ModuleParent {
     }
 
     @Override
-    public boolean contain(Module module) {
+    protected boolean contain(Object... targets) {
         for (Module child : mChildren) {
-            if (child.contain(module)) {
+            if (child.contain(targets)) {
                 return true;
             }
         }

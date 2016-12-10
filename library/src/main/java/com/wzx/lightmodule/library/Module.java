@@ -2,6 +2,7 @@ package com.wzx.lightmodule.library;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,18 +48,32 @@ public abstract class Module {
         return mView;
     }
 
-    public void refresh() {
+    public void refresh(Object... targets) {
         onRefresh();
     }
 
-    public final void requestRefresh(boolean forceSelf) {
+    public void requestRefresh(Object... targets) {
         if (mParent != null) {
-            mParent.requestRefresh(forceSelf ? this : null);
+            mParent.requestRefresh(targets);
         }
     }
 
-    protected boolean contain(Module module) {
-        return module == this;
+    protected String getTag() {
+        return null;
+    }
+
+    protected boolean contain(Object... targets) {
+        if (targets == null) {
+            return false;
+        }
+        for (Object target : targets) {
+            if (target == this) {
+                return true;
+            } else if (!TextUtils.isEmpty(getTag()) && getTag().equals(target)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void onResume() {
