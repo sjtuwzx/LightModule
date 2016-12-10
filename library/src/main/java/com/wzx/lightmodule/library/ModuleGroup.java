@@ -49,7 +49,9 @@ public class ModuleGroup extends Module implements ModuleParent {
     @Override
     public boolean shouldShowModule() {
         for (Module child : mChildren) {
-            return child.shouldShowModule();
+            if (child.shouldShowModule()) {
+                return true;
+            }
         }
         return false;
     }
