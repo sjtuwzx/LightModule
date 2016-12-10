@@ -29,7 +29,7 @@ public class ModuleManager extends ModuleGroup {
     }
 
     public void destroy() {
-        onDestroyView();
-        onDestroy();
+        destroyView();
+        super.destroy();
     }
 }

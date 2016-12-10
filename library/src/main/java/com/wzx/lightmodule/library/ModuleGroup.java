@@ -139,19 +139,19 @@ public class ModuleGroup extends Module implements ModuleParent {
     }
 
     @Override
-    protected void onDestroyView() {
+    void destroyView() {
         for (Module child : mChildren) {
-            if (child.getViewIfCreated() != null) {
-                child.onDestroyView();
-            }
+            child.destroyView();
         }
+        super.destroyView();
     }
 
     @Override
-    protected void onDestroy() {
+    void destroy() {
         for (Module child : mChildren) {
-            child.onDestroy();
+            child.destroy();
         }
+        super.destroy();
     }
 
     @Override

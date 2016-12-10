@@ -112,6 +112,16 @@ public abstract class Module {
         }
     }
 
+    void destroyView() {
+        if (getViewIfCreated() != null) {
+            onDestroyView();
+        }
+    }
+
+    void destroy() {
+        onDestroy();
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
     }
