@@ -1,6 +1,7 @@
 package com.wzx.lightmodule.library;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.ViewGroup;
 
 /**
@@ -9,23 +10,49 @@ import android.view.ViewGroup;
 
 public class ModuleManager extends ModuleGroup {
 
+    private Handler mHandler = new Handler();
+
     public ModuleManager(Context context, ViewGroup container) {
         super(context, container);
     }
 
     @Override
-    public void requestRefresh(Object... targets) {
-        refresh(targets);
+    public void requestRefreshModules(Object... targets) {
+        mHandler.post(new RefreshTask(targets));
     }
 
-    @Override
+    public void refresh() {
+        super.refresh();
+    }
+
+    private class RefreshTask implements Runnable {
+
+        private Object[] mTargets;
+
+        private RefreshTask(Object... targets) {
+            mTargets = targets;
+        }
+
+        @Override
+        public void run() {
+            refresh(mTargets);
+        }
+    }
+
+    public void start() {
+        start(true);
+    }
+
     public void resume() {
-        super.resume();
+        resume(true);
     }
 
-    @Override
     public void pause() {
-        super.pause();
+        pause(true);
+    }
+
+    public void stop() {
+        stop(true);
     }
 
     public void destroy() {

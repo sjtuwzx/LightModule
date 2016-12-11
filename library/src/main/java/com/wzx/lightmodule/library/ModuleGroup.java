@@ -64,6 +64,18 @@ public class ModuleGroup extends Module implements ModuleParent {
         return mContainer;
     }
 
+    @Override
+    public final void requestRefresh(Object... targets) {
+        throw new UnsupportedOperationException("Only support request refresh from leaf module");
+    }
+
+    @Override
+    public void requestRefreshModules(Object... targets) {
+        if (mParent != null) {
+            mParent.requestRefreshModules(targets);
+        }
+    }
+
     /**
      * 刷新module及子module。若targets为空,则刷新自身及所有后裔节点;targets中元素若为module且后裔节点中包含该module,
      * 刷新该module及包含该module的ModuleGroup;targets中元素若为String,刷新后裔节点中tag为target的module及包含该module的ModuleGroup。
@@ -71,7 +83,7 @@ public class ModuleGroup extends Module implements ModuleParent {
      * @param targets
      */
     @Override
-    public void refresh(Object... targets) {
+    void refresh(Object... targets) {
         boolean isTargetsEmpty = targets == null || targets.length == 0;
         int index = 0;
         for (Module child : mChildren) {
@@ -93,10 +105,12 @@ public class ModuleGroup extends Module implements ModuleParent {
                     } else {
                         child.refresh();
                     }
-                    child.resume();
+                    child.start(false);
+                    child.resume(false);
                 } else if (childView != null) {
                     childView.setVisibility(View.GONE);
-                    child.pause();
+                    child.pause(false);
+                    child.stop(false);
                 }
             }
             if (childView != null && mContainer.indexOfChild(childView) >= 0) {
@@ -123,19 +137,35 @@ public class ModuleGroup extends Module implements ModuleParent {
     }
 
     @Override
-    void resume() {
+    final void start(boolean force) {
         for (Module child : mChildren) {
-            child.resume();
+            child.start(force);
         }
-        super.resume();
+        super.start(force);
     }
 
     @Override
-    void pause() {
+    final void resume(boolean force) {
         for (Module child : mChildren) {
-            child.pause();
+            child.resume(force);
         }
-        super.pause();
+        super.resume(force);
+    }
+
+    @Override
+    final void pause(boolean force) {
+        for (Module child : mChildren) {
+            child.pause(force);
+        }
+        super.pause(force);
+    }
+
+    @Override
+    final void stop(boolean force) {
+        for (Module child : mChildren) {
+            child.stop(force);
+        }
+        super.stop(force);
     }
 
     @Override

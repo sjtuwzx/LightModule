@@ -19,7 +19,11 @@ public abstract class Module {
 
     private View mView;
 
+    private boolean mIsStarted = false;
     private boolean mIsResumed = false;
+
+    private boolean mIsForcePause = false;
+    private boolean mIsForceStop = false;
 
     public abstract boolean shouldShowModule();
 
@@ -48,7 +52,7 @@ public abstract class Module {
         return mView;
     }
 
-    public void refresh(Object... targets) {
+    void refresh(Object... targets) {
         onRefresh();
     }
 
@@ -60,8 +64,15 @@ public abstract class Module {
      */
     public void requestRefresh(Object... targets) {
         if (mParent != null) {
-            mParent.requestRefresh(targets);
+            mParent.requestRefreshModules(targets);
         }
+    }
+
+    /**
+     * 请求刷新自身
+     */
+    public final void requestRefreshSelf() {
+        requestRefresh(this);
     }
 
     protected String getTag() {
@@ -82,11 +93,19 @@ public abstract class Module {
         return false;
     }
 
+    protected void onStart() {
+
+    }
+
     protected void onResume() {
 
     }
 
     protected void onPause() {
+
+    }
+
+    protected void onStop() {
 
     }
 
@@ -98,17 +117,35 @@ public abstract class Module {
 
     }
 
-    void resume() {
-        if (!mIsResumed && getViewIfCreated() != null && shouldShowModule()) {
+    void start(boolean force) {
+        mIsForceStop &= !force;
+        if (!mIsForceStop && !mIsStarted && getViewIfCreated() != null && shouldShowModule()) {
+            onStart();
+            mIsStarted = true;
+        }
+    }
+
+    void resume(boolean force) {
+        mIsForcePause &= !force;
+        if (!mIsForcePause && !mIsResumed && getViewIfCreated() != null && shouldShowModule()) {
             onResume();
             mIsResumed = true;
         }
     }
 
-    void pause() {
+    void pause(boolean force) {
+        mIsForcePause |= force;
         if (mIsResumed) {
             onPause();
             mIsResumed = false;
+        }
+    }
+
+    void stop(boolean force) {
+        mIsForceStop |= force;
+        if (mIsStarted) {
+            onStop();
+            mIsStarted = false;
         }
     }
 

@@ -38,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        mModuleManager.start();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         mModuleManager.resume();
@@ -47,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         mModuleManager.pause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mModuleManager.stop();
     }
 
     @Override

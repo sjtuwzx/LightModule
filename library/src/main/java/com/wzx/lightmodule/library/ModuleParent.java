@@ -6,5 +6,5 @@ package com.wzx.lightmodule.library;
 
 public interface ModuleParent {
 
-    void requestRefresh(Object... targets);
+    void requestRefreshModules(Object... targets);
 }
