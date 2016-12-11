@@ -42,10 +42,12 @@ public class TopModule extends Module implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         ++mClickCount;
-        if (mClickCount % 2 == 0) {
+        if (mClickCount % 3 == 0) {
             requestRefresh(this, "Item1", "Item2", "Item5", "Item6");
-        } else {
+        } else if (mClickCount % 3 == 1){
             requestRefresh();
+        } else if (mClickCount % 3 == 2) {
+            requestRefreshSelf();
         }
     }
 }
