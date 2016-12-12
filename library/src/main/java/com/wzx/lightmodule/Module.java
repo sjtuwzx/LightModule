@@ -64,7 +64,7 @@ public abstract class Module {
      */
     public void requestRefresh(Object... targets) {
         if (mParent != null) {
-            mParent.requestRefreshModules(targets);
+            mParent.requestModulesRefresh(targets);
         }
     }
 

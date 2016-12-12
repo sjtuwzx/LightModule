@@ -70,9 +70,9 @@ public class ModuleGroup extends Module implements ModuleParent {
     }
 
     @Override
-    public void requestRefreshModules(Object... targets) {
+    public void requestModulesRefresh(Object... targets) {
         if (mParent != null) {
-            mParent.requestRefreshModules(targets);
+            mParent.requestModulesRefresh(targets);
         }
     }
 

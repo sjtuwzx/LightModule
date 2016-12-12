@@ -51,16 +51,34 @@ public class ItemModule extends Module {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, String.format("Item[%d] onStart[%d]", mIndex, mRefreshCount));
+        requestRefresh();
+        requestRefresh("Item1");
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         Log.i(TAG, String.format("Item[%d] onResume[%d]", mIndex, mRefreshCount));
-        //requestRefresh();
+        requestRefresh();
+        requestRefresh("Item2");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.i(TAG, String.format("Item[%d] onPause[%d]", mIndex, mRefreshCount));
-        //requestRefresh();
+        requestRefresh();
+        requestRefresh("Item3");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, String.format("Item[%d] onStop[%d]", mIndex, mRefreshCount));
+        requestRefresh();
+        requestRefresh("Item4");
     }
 }
