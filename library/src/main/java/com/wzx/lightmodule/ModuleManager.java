@@ -39,7 +39,7 @@ public class ModuleManager extends ModuleGroup {
         super.refresh();
     }
 
-    private class RefreshTask implements Runnable {
+    private final class RefreshTask implements Runnable {
 
         private Object[] mTargets;
 
