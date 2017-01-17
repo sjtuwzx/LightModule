@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void buildModuleManager() {
         mModuleManager = new ModuleManager(this, (ViewGroup) findViewById(R.id.activity_main));
+        mModuleManager.bindLifecycle(this);
+
         Module topModule = new TopModule(this);
         mModuleManager.addModule(topModule);
 
@@ -35,36 +37,6 @@ public class MainActivity extends AppCompatActivity {
         }
         mModuleManager.addModule(scrollModuleGroup);
         mModuleManager.refresh();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mModuleManager.start();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mModuleManager.resume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mModuleManager.pause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mModuleManager.stop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mModuleManager.destroy();
     }
 
     @Override

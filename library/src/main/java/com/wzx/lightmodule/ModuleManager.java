@@ -2,6 +2,9 @@ package com.wzx.lightmodule;
 
 import android.content.Context;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.util.ArrayMap;
 import android.view.ViewGroup;
 
@@ -15,12 +18,31 @@ import java.util.List;
 
 public class ModuleManager extends ModuleGroup {
 
+    private static final String FRAGMENT_TAG_LIFECYCLE = "lifecycle";
+
     private Handler mHandler = new Handler();
 
     private ArrayMap<String, RefreshTask> mPendingRefreshTasks = new ArrayMap<String, RefreshTask>();
 
     public ModuleManager(Context context, ViewGroup container) {
         super(context, container);
+    }
+
+    public void bindLifecycle(FragmentActivity activity) {
+        bindLifecycle(activity.getSupportFragmentManager());
+    }
+
+    public void bindLifecycle(Fragment fragment) {
+        bindLifecycle(fragment.getChildFragmentManager());
+    }
+
+    private void bindLifecycle(FragmentManager fm) {
+        LifecycleFragment current = (LifecycleFragment) fm.findFragmentByTag(FRAGMENT_TAG_LIFECYCLE);
+        if (current == null) {
+            current = new LifecycleFragment();
+            fm.beginTransaction().add(current, FRAGMENT_TAG_LIFECYCLE).commitAllowingStateLoss();
+        }
+        current.addModuleManager(this);
     }
 
     @Override
@@ -73,24 +95,20 @@ public class ModuleManager extends ModuleGroup {
         return stringBuilder.toString();
     }
 
-    public void start() {
+    void start() {
         start(true);
     }
 
-    public void resume() {
+    void resume() {
         resume(true);
     }
 
-    public void pause() {
+    void pause() {
         pause(true);
     }
 
-    public void stop() {
+    void stop() {
         stop(true);
     }
 
-    public void destroy() {
-        destroyView();
-        super.destroy();
-    }
 }
