@@ -76,6 +76,14 @@ public class ModuleGroup extends Module implements ModuleParent {
         }
     }
 
+    @Override
+    final void performPreRefreshModuleTree() {
+        for (Module child : mChildren) {
+            child.performPreRefreshModuleTree();
+        }
+        super.performPreRefreshModuleTree();
+    }
+
     /**
      * 刷新module及子module。若targets为空,则刷新自身及所有后裔节点;targets中元素若为module且后裔节点中包含该module,
      * 刷新该module及包含该module的ModuleGroup;targets中元素若为String,刷新后裔节点中tag为target的module及包含该module的ModuleGroup。

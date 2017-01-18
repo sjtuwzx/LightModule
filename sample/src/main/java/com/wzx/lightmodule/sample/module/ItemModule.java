@@ -21,6 +21,7 @@ public class ItemModule extends Module {
     private TextView mTextView;
     private int mIndex;
     private int mRefreshCount = 0;
+    private int mTreeRefreshCount = 0;
 
     public ItemModule(Context context, int index) {
         super(context);
@@ -29,7 +30,7 @@ public class ItemModule extends Module {
 
     @Override
     public boolean shouldShowModule() {
-        return mIndex % 5 != 0;
+        return mIndex % 5 != 0 || mTreeRefreshCount >= 10;
     }
 
     @Override
@@ -41,6 +42,11 @@ public class ItemModule extends Module {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent) {
         mTextView = (TextView) inflater.inflate(R.layout.item_module, parent, false);
         return mTextView;
+    }
+
+    @Override
+    protected void onPreRefreshModuleTree() {
+        ++mTreeRefreshCount;
     }
 
     @Override

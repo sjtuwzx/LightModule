@@ -58,6 +58,7 @@ public class ModuleManager extends ModuleGroup {
     }
 
     public void refresh() {
+        performPreRefreshModuleTree();
         super.refresh();
     }
 
@@ -71,6 +72,8 @@ public class ModuleManager extends ModuleGroup {
 
         @Override
         public void run() {
+            performPreRefreshModuleTree();
+
             String targetsKey = getTargetsKey(mTargets);
             mPendingRefreshTasks.remove(targetsKey);
             refresh(mTargets);

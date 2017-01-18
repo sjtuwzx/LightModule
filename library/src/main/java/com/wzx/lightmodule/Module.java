@@ -52,6 +52,17 @@ public abstract class Module {
         return mView;
     }
 
+    void performPreRefreshModuleTree() {
+        onPreRefreshModuleTree();
+    }
+
+    /**
+     * module tree刷新前调用,可用于module内发服务
+     */
+    protected void onPreRefreshModuleTree() {
+
+    }
+
     void refresh(Object... targets) {
         onRefresh();
     }
