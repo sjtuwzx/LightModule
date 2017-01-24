@@ -40,7 +40,7 @@ public class ModuleManager extends ModuleGroup {
         LifecycleFragment current = (LifecycleFragment) fm.findFragmentByTag(FRAGMENT_TAG_LIFECYCLE);
         if (current == null) {
             current = new LifecycleFragment();
-            fm.beginTransaction().add(current, FRAGMENT_TAG_LIFECYCLE).commitAllowingStateLoss();
+            fm.beginTransaction().add(current, FRAGMENT_TAG_LIFECYCLE).commitNowAllowingStateLoss();
         }
         current.addModuleManager(this);
     }
